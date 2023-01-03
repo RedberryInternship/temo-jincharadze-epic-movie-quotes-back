@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 
 //Public routes
 Route::prefix('/')->middleware('guest')->group(function () {
 	Route::post('register', [SessionController::class, 'register'])->name('register');
+	Route::get('epicmovies/verify', [SessionController::class, 'verify'])->name('verification.verify');
 });
