@@ -40,10 +40,10 @@ class SessionController extends Controller
 			'verification.verify',
 			now()->addMinutes(30),
 			[
-				'email' => $email,
+				'email' => $userEmail->id,
 			]
 		);
-		$frontUrl = Config('app.front_url') . '?verify=' . urldecode($url);
+		$frontUrl = Config('app.front_url') . '?verify=' . $url;
 		Mail::to($email)->send(new VerificationMail(['url'=> $frontUrl, 'user' => $user->name]));
 
 		return response($response, 201);
@@ -51,9 +51,9 @@ class SessionController extends Controller
 
 	public function verify(Request $request)
 	{
-		$email = Email::where('email', $request->email)->first();
+		$email = Email::where('id', $request->email)->first();
 
-		if ($request->hasValidSignature())
+		if ($request->hasValidSignature($request->signature))
 		{
 			if (!is_null($email->email_verified_at))
 			{
@@ -63,6 +63,9 @@ class SessionController extends Controller
 			$email->save();
 			return response('Verified', 200);
 		}
-		return response('Route expired');
+		else
+		{
+			return response('Route expired');
+		}
 	}
 }
