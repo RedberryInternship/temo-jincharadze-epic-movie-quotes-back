@@ -37,7 +37,7 @@ class SessionController extends Controller
 
 		$url = URL::temporarySignedRoute('verification.verify', now()->addMinutes(30), ['id' => $user->id, 'token' => hash('sha256', $email)]);
 
-		Mail::to($email)->send(new VerificationMail(['url'=> $url, 'token' => hash('sha256', $email), 'id' => $user->id]));
+		Mail::to($email)->send(new VerificationMail(['url'=> $url, 'token' => hash('sha256', $email), 'id' => $user->id, 'user' => $user->name]));
 
 		return response($response, 201);
 	}
@@ -46,6 +46,7 @@ class SessionController extends Controller
 	{
 		if ($request->hasValidSignature())
 		{
+			$request->hasValidSignature();
 			return response('Verified', 200);
 		}
 		return response('Route expired');
