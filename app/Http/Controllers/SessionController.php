@@ -40,11 +40,11 @@ class SessionController extends Controller
 			'verification.verify',
 			now()->addMinutes(30),
 			[
-				'user' => $user->name,
+				'email' => $email,
 			]
 		);
 		$frontUrl = Config('app.front_url') . '?verify-account=' . $url;
-		Mail::to($email)->send(new VerificationMail(['url'=> $frontUrl, 'user' => $user->name, 'email' => $email]));
+		Mail::to($email)->send(new VerificationMail(['url'=> $frontUrl, 'user' => $user->name]));
 
 		return response($response, 201);
 	}
