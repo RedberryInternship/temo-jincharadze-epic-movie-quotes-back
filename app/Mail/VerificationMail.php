@@ -18,11 +18,14 @@ class VerificationMail extends Mailable
 
 	public $id;
 
+	public $user;
+
 	public function __construct($data)
 	{
 		$this->url = $data['url'];
 		$this->token = $data['token'];
 		$this->id = $data['id'];
+		$this->user = $data['user'];
 	}
 
 	public function envelope()
