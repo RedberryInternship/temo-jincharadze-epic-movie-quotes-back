@@ -12,7 +12,7 @@ return new class() extends Migration {
 			$table->string('name');
 			$table->string('password');
 			$table->string('google_id')->nullable();
-			$table->string('image')->default(asset('storage/images/avatar/default.jpg'));
+			$table->string('image')->default(asset('/assets/images/default.jpg'));
 			$table->rememberToken();
 			$table->timestamps();
 		});
