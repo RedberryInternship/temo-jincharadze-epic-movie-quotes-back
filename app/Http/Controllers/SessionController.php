@@ -51,7 +51,7 @@ class SessionController extends Controller
 
 	public function verify(Request $request)
 	{
-		$email = Email::where('email', $request->email);
+		$email = Email::where('email', $request->email)->first();
 
 		if ($request->hasValidSignature())
 		{
