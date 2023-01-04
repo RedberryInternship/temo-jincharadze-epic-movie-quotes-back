@@ -43,7 +43,7 @@ class SessionController extends Controller
 				'email' => $email,
 			]
 		);
-		$frontUrl = Config('app.front_url') . '?verify-account=' . $url;
+		$frontUrl = Config('app.front_url') . '?verify=' . urldecode($url);
 		Mail::to($email)->send(new VerificationMail(['url'=> $frontUrl, 'user' => $user->name]));
 
 		return response($response, 201);
