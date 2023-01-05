@@ -55,7 +55,7 @@ class SessionController extends Controller
 
 		if ($request->hasValidSignature())
 		{
-			if (!is_null($email->email_verified_at))
+			if ($email->email_verified_at)
 			{
 				return response('Email is already verified');
 			}
