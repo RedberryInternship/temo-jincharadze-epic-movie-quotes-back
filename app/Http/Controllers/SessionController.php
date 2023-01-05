@@ -53,7 +53,7 @@ class SessionController extends Controller
 	{
 		$email = Email::where('id', $request->email)->first();
 
-		if ($request->hasValidSignature($request->signature))
+		if ($request->hasValidSignature())
 		{
 			if (!is_null($email->email_verified_at))
 			{
