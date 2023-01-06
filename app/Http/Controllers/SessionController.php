@@ -69,7 +69,7 @@ class SessionController extends Controller
 		}
 		else
 		{
-			return response('Route expired');
+			return response('Route expired', 403);
 		}
 	}
 }
