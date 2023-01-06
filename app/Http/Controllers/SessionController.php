@@ -22,9 +22,8 @@ class SessionController extends Controller
 			return response('', 422);
 		}
 
-		$formFields['password'] = bcrypt($formFields['password']);
-
 		$userData = $request->except(['email']);
+		$userData['password'] = bcrypt($userData['password']);
 		$email = $request->email;
 
 		$user = User::create($userData);
