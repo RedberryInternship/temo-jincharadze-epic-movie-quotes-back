@@ -17,6 +17,11 @@ class SessionController extends Controller
 	{
 		$formFields = $request->validated();
 
+		if (!$formFields)
+		{
+			return response('', 422);
+		}
+
 		$formFields['password'] = bcrypt($formFields['password']);
 
 		$userData = $request->except(['email']);
