@@ -17,9 +17,13 @@ class SessionController extends Controller
 	{
 		$formFields = $request->validated();
 
-		$formFields['password'] = bcrypt($formFields['password']);
+		if (!$formFields)
+		{
+			return response('', 422);
+		}
 
 		$userData = $request->except(['email']);
+		$userData['password'] = bcrypt($userData['password']);
 		$email = $request->email;
 
 		$user = User::create($userData);
@@ -65,7 +69,7 @@ class SessionController extends Controller
 		}
 		else
 		{
-			return response('Route expired');
+			return response('Route expired', 403);
 		}
 	}
 }
