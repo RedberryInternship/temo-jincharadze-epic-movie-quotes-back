@@ -102,7 +102,7 @@ class SessionController extends Controller
 				'email' => $userEmail->id,
 			]
 		);
-		$frontUrl = Config('app.front_url') . '?verify=' . $url;
+		$frontUrl = Config('app.front_url') . app()->getLocale() . '/verify/' . '?verify=' . $url;
 		Mail::to($email)->send(new VerificationMail(['url'=> $frontUrl, 'user' => $user->name]));
 
 		return response($response, 201);
