@@ -69,6 +69,7 @@ class SessionController extends Controller
 
 	public function register(RegisterUserRequest $request)
 	{
+		app()->setLocale($request->lang);
 		$formFields = $request->validated();
 
 		if (!$formFields)
