@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Session\AuthRequest;
 use App\Http\Requests\Session\RegisterUserRequest;
 use App\Mail\VerificationMail;
 use App\Models\Email;
@@ -13,8 +14,62 @@ use Illuminate\Support\Facades\URL;
 
 class SessionController extends Controller
 {
+	public function login(AuthRequest $request)
+	{
+		$login = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+		$remember = request()->has('remember') ? true : false;
+		$request->merge([$login => $request->input('login')]);
+
+		if ($login === 'email')
+		{
+			$email = Email::where('email', $request->login)->first();
+
+			if ($email)
+			{
+				if (!$email->email_verified_at)
+				{
+					return response(['message' => 'Your email is not verified.'], 422);
+				}
+				$user = $email->user;
+			}
+			else
+			{
+				return response(['message' => 'Email not found!'], 400);
+			}
+		}
+
+		if ($login === 'name')
+		{
+			$user = User::where('name', $request->login)->first();
+
+			if (!$user)
+			{
+				return response(['message' => 'Username not found!'], 400);
+			}
+
+			if ($user)
+			{
+				$checkEmail = $user->email->where('email_verified_at', '!=', 'null')->first();
+				if (!$checkEmail->email_verified_at)
+				{
+					return response(['message' => 'Your account email is not verified'], 422);
+				}
+			}
+		}
+
+		if (auth()->validate(['id' => $user->id, 'password' => $request->password]))
+		{
+			auth()->loginUsingId($user->id, $remember);
+			request()->session()->regenerate();
+			return response(['user' => auth()->user()], 200);
+		}
+
+		return response(['message' => 'Invalid Credentials'], 401);
+	}
+
 	public function register(RegisterUserRequest $request)
 	{
+		app()->setLocale($request->lang);
 		$formFields = $request->validated();
 
 		if (!$formFields)

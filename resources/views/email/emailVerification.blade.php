@@ -121,23 +121,21 @@
                     </div>
                 </div>
                 <div class="content-wrapper">
-                    <p>Hola {{ $user }}!</p>
+                    <p>{{ __("email.hola") }} {{ $user }}!</p>
                     <p class="joining">
-                        Thanks for joining Movie quotes! We really appreciate
-                        it. Please click the button below to verify your
-                        account:
+                        {{ __("email.joining") }}
                     </p>
-                    <a class="button" href="{{ $url }}">Verify account</a>
+                    <a class="button" href="{{ $url }}">
+                        {{ __("email.btn") }}</a
+                    >
                     <p>
-                        If clicking doesn't work, you can try copying and
-                        pasting it to your browser:
+                        {{ __("email.link.description") }}
                     </p>
                     <a href="{{ $url }}" class="url">{{ $url }}</a>
                     <p>
-                        If you have any problems, please contact us:
-                        support@moviequotes.ge
+                        {{ __("email.support") }}
                     </p>
-                    <p class="movie">MovieQuotes Crew</p>
+                    <p class="movie">MovieQuotes {{ __("email.crew") }}.</p>
                 </div>
             </div>
         </div>
