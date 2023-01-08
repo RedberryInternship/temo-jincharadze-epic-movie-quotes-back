@@ -46,7 +46,6 @@ class PasswordController extends Controller
 
 	public function check()
 	{
-		app()->setLocale(request()->lang);
 		if (request()->hasValidSignature())
 		{
 			return response(['message' => 'Valid token', 'email' => request()->email], 200);
