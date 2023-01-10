@@ -30,6 +30,8 @@ jobs:
             cd epic-movies-back
             git pull
             npm ci
+            php artisan optimize
+            php artisan migrate
             composer install
             pm2 restart epic-movies-back
           EOF
