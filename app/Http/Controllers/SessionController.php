@@ -59,8 +59,8 @@ class SessionController extends Controller
 
 		if (auth()->validate(['id' => $user->id, 'password' => $request->password]))
 		{
-			request()->session()->regenerate();
 			auth()->loginUsingId($user->id, $remember);
+			request()->session()->regenerate();
 			return response(['user' => auth()->user()], 200);
 		}
 
