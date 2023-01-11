@@ -59,8 +59,8 @@ class SessionController extends Controller
 
 		if (auth()->validate(['id' => $user->id, 'password' => $request->password]))
 		{
-			auth()->loginUsingId($user->id, $remember);
 			request()->session()->regenerate();
+			auth()->loginUsingId($user->id, $remember);
 			return response(['user' => auth()->user()], 200);
 		}
 
@@ -103,6 +103,7 @@ class SessionController extends Controller
 			]
 		);
 		$frontUrl = Config('app.front_url') . app()->getLocale() . '/verify/' . '?verify=' . $url;
+
 		Mail::to($email)->send(new VerificationMail(['url'=> $frontUrl, 'user' => $user->name]));
 
 		return response($response, 201);
