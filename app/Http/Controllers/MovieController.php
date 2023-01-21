@@ -6,17 +6,18 @@ use App\Http\Requests\Movie\MovieStoreRequest;
 use App\Models\Movie;
 use App\Models\MovieTag;
 use App\Models\Tag;
+use Illuminate\Http\JsonResponse;
 
 class MovieController extends Controller
 {
-	public function tags()
+	public function tags(): JsonResponse
 	{
 		$getAllTags = Tag::select('id', 'name')->get();
 
-		return response($getAllTags, 200);
+		return response()->json($getAllTags, 200);
 	}
 
-	public function store(MovieStoreRequest $request)
+	public function store(MovieStoreRequest $request): JsonResponse
 	{
 		$validated = $request->validated();
 		$movie = new Movie();
@@ -54,6 +55,13 @@ class MovieController extends Controller
 				]);
 			}
 		}
-		return response(['movie' => $movie, 'tags' => $tags], 200);
+		return response()->json(['movie' => $movie, 'tags' => $tags], 200);
+	}
+
+	public function userMovies(): JsonResponse
+	{
+		$user = auth()->user();
+		$movie = $user->movie()->select(['id', 'name', 'image', 'year'])->get();
+		return response()->json($movie, 200);
 	}
 }
