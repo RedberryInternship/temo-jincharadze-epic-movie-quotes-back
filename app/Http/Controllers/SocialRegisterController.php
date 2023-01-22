@@ -6,12 +6,13 @@ use App\Models\Email;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Query\Expression;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialRegisterController extends Controller
 {
-	public function redirectToProvider($locale, $type)
+	public function redirectToProvider($locale, $type): JsonResponse
 	{
 		$locale === 'ka' ? $curLocale = 'ka' : $curLocale = '';
 		$type === 'login' ? $curType = 'login' : $curType = 'register';
@@ -55,7 +56,7 @@ class SocialRegisterController extends Controller
 		{
 			Auth::loginUsingId($checkIfExists->id, true);
 			request()->session()->regenerate();
-			return response($checkIfExists, 200);
+			return response()->json($checkIfExists, 200);
 		}
 
 		$newAccount = User::create([
@@ -68,10 +69,11 @@ class SocialRegisterController extends Controller
 			'email'             => $user->email,
 			'user_id'           => $newAccount->id,
 			'email_verified_at' => Carbon::now(),
+			'primary'           => true,
 		]);
 
 		Auth::loginUsingId($newAccount->id, true);
 		request()->session()->regenerate();
-		return response([$newAccount, $newEmail], 201);
+		return response()->json([$newAccount, $newEmail], 201);
 	}
 }
