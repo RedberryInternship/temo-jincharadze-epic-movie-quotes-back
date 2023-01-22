@@ -58,10 +58,62 @@ class MovieController extends Controller
 		return response()->json(['movie' => $movie, 'tags' => $tags], 200);
 	}
 
+	public function update(MovieStoreRequest $request, $id): JsonResponse
+	{
+		$validated = $request->validated();
+
+		$movie = Movie::where('id', $id)->first();
+
+		$nameTranslations = [['en' => $validated['nameEn'], 'ka' => $validated['nameKa']]];
+		$directorTranslation = [['en' => $validated['directorEn'], 'ka' => $validated['directorKa']]];
+		$descriptionTranslation = [['en' => $validated['descriptionEn'], 'ka' => $validated['descriptionKa']]];
+
+		$image = $request->validated('image');
+
+		if (request()->hasFile('image'))
+		{
+			$data = request()->file('image')->store('movie/images');
+			$image = asset('storage/' . $data);
+		}
+
+		$movie->replaceTranslations('name', $nameTranslations);
+		$movie->replaceTranslations('director', $directorTranslation);
+		$movie->replaceTranslations('description', $descriptionTranslation);
+
+		$movie->update([
+			'budget' => (float)$validated['budget'],
+			'image'  => $image,
+			'year'   => (int)$validated['year'],
+		]);
+
+		$movie->save();
+
+		if ($movie)
+		{
+			MovieTag::where('movie_id', $id)->delete();
+			$tags = json_decode($validated['tags']);
+			foreach ($tags as $tag)
+			{
+				MovieTag::create([
+					'movie_id' => $movie->id,
+					'tag_id'   => (int)$tag,
+				]);
+			}
+		}
+		return response()->json(['movie' => $movie, 'tags' => $tags], 200);
+	}
+
 	public function userMovies(): JsonResponse
 	{
 		$user = auth()->user();
 		$movie = $user->movie()->select(['id', 'name', 'image', 'year'])->get();
 		return response()->json($movie, 200);
+	}
+
+	public function userMovie($id): JsonResponse
+	{
+		$movie = Movie::where('id', $id)->with('tag')->get();
+
+		return response()->json(['movie'=> $movie], 200);
 	}
 }
