@@ -13,6 +13,7 @@ class Email extends Model
 		'email',
 		'email_verified_at',
 		'user_id',
+		'primary',
 	];
 
 	public function user()
