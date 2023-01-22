@@ -26,7 +26,7 @@ class SocialRegisterController extends Controller
 		]);
 	}
 
-	public function handleCallBack($locale, $type, Email $email)
+	public function handleCallBack($locale, $type, Email $email): JsonResponse
 	{
 		$locale === 'ka' ? $curLocale = 'ka' : $curLocale = '';
 		$type === 'register' ? $curType = 'register' : $curType = 'login';
