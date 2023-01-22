@@ -103,6 +103,13 @@ class MovieController extends Controller
 		return response()->json(['movie' => $movie, 'tags' => $tags], 200);
 	}
 
+	public function destroy($id): JsonResponse
+	{
+		$movie = Movie::where('id', $id)->first();
+		$movie->delete();
+		return response()->json('successfully deleted', 200);
+	}
+
 	public function userMovies(): JsonResponse
 	{
 		$user = auth()->user();

@@ -26,4 +26,5 @@ Route::prefix('/auth')->middleware(['auth:sanctum'])->group(function () {
 	Route::get('/user-movies', [MovieController::class, 'userMovies']);
 	Route::get('/movie/{id}', [MovieController::class, 'userMovie']);
 	Route::put('/movie/{id}', [MovieController::class, 'update']);
+	Route::delete('/movie/{id}', [MovieController::class, 'destroy']);
 });
