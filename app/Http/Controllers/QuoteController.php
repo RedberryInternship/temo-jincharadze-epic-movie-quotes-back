@@ -12,6 +12,11 @@ class QuoteController extends Controller
 	{
 		$validated = $request->validated();
 
+		if (!$validated)
+		{
+			return response()->json('', 422);
+		}
+
 		$quote = new Quote();
 
 		$textTranslation = ['en' => ucwords($validated['quoteEn']), 'ka' => ucwords($validated['quoteKa'])];
