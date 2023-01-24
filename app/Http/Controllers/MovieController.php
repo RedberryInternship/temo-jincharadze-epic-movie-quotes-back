@@ -22,9 +22,9 @@ class MovieController extends Controller
 		$validated = $request->validated();
 		$movie = new Movie();
 
-		$nameTranslations = [['en' => $validated['nameEn'], 'ka' => $validated['nameKa']]];
-		$directorTranslation = [['en' => $validated['directorEn'], 'ka' => $validated['directorKa']]];
-		$descriptionTranslation = [['en' => $validated['descriptionEn'], 'ka' => $validated['descriptionKa']]];
+		$nameTranslations = ['en' => ucwords($validated['nameEn']), 'ka' => ucwords($validated['nameKa'])];
+		$directorTranslation = ['en' => ucwords($validated['directorEn']), 'ka' => ucwords($validated['directorKa'])];
+		$descriptionTranslation = ['en' => $validated['descriptionEn'], 'ka' => $validated['descriptionKa']];
 
 		$image = $request->validated('image');
 
@@ -55,7 +55,7 @@ class MovieController extends Controller
 				]);
 			}
 		}
-		return response()->json(['movie' => $movie, 'tags' => $tags], 200);
+		return response()->json(['movie' => $movie, 'tags' => $tags], 201);
 	}
 
 	public function update(MovieStoreRequest $request, $id): JsonResponse
@@ -64,9 +64,9 @@ class MovieController extends Controller
 
 		$movie = Movie::where('id', $id)->first();
 
-		$nameTranslations = [['en' => $validated['nameEn'], 'ka' => $validated['nameKa']]];
-		$directorTranslation = [['en' => $validated['directorEn'], 'ka' => $validated['directorKa']]];
-		$descriptionTranslation = [['en' => $validated['descriptionEn'], 'ka' => $validated['descriptionKa']]];
+		$nameTranslations = ['en' => ucwords($validated['nameEn']), 'ka' => ucwords($validated['nameKa'])];
+		$directorTranslation = ['en' => ucwords($validated['directorEn']), 'ka' => ucwords($validated['directorKa'])];
+		$descriptionTranslation = ['en' => $validated['descriptionEn'], 'ka' => $validated['descriptionKa']];
 
 		$image = $request->validated('image');
 
@@ -112,15 +112,18 @@ class MovieController extends Controller
 
 	public function userMovies(): JsonResponse
 	{
+		app()->setLocale(request('locale'));
 		$user = auth()->user();
-		$movie = $user->movie()->select(['id', 'name', 'image', 'year'])->get();
+		$movie = Movie::where('user_id', $user->id)->filter(request(['search']))->orderBy('created_at', 'desc')->withCount('quotes')->get();
 		return response()->json($movie, 200);
 	}
 
 	public function userMovie($id): JsonResponse
 	{
-		$movie = Movie::where('id', $id)->with('tag')->get();
+		$movie = Movie::where('id', $id)->with(['tag', 'quotes' => function ($query) {
+			$query->orderBy('created_at', 'desc');
+		}])->get();
 
-		return response()->json(['movie'=> $movie], 200);
+		return response()->json($movie, 200);
 	}
 }
