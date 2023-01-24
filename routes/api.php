@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SocialRegisterController;
 use App\Http\Controllers\UserController;
@@ -18,6 +19,7 @@ Route::prefix('/')->middleware('guest')->group(function () {
 	Route::get('google-register/{locale}/{type}', [SocialRegisterController::class, 'redirectToProvider'])->name('google.register');
 	Route::get('auth/google/{locale}/{type}/callback', [SocialRegisterController::class, 'handleCallBack'])->name('google.register.callback');
 });
+
 //Auth routes
 Route::prefix('/auth')->middleware(['auth:sanctum'])->group(function () {
 	Route::get('/user', [UserController::class, 'me']);
@@ -27,4 +29,5 @@ Route::prefix('/auth')->middleware(['auth:sanctum'])->group(function () {
 	Route::get('/movie/{id}', [MovieController::class, 'userMovie']);
 	Route::put('/movie/{id}', [MovieController::class, 'update']);
 	Route::delete('/movie/{id}', [MovieController::class, 'destroy']);
+	Route::post('/quote-upload', [QuoteController::class, 'store']);
 });
