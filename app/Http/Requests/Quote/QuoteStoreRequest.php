@@ -10,8 +10,8 @@ class QuoteStoreRequest extends FormRequest
 	{
 		return [
 			'movie_id' => ['required'],
-			'quoteEn'  => ['required', 'regex:/^[a-zA-Z0-9]*$/'],
-			'quoteKa'  => ['required', 'regex:/^[ა-ჰ0-9]*$/'],
+			'quoteEn'  => ['required', 'regex:/^[a-zA-Z0-9 ]*$/'],
+			'quoteKa'  => ['required', 'regex:/^[ა-ჰ0-9 ]*$/'],
 			'image'    => ['required'],
 		];
 	}

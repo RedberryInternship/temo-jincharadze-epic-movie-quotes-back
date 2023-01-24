@@ -20,8 +20,18 @@ class Quote extends Model
 		'image',
 	];
 
-	public function movie()
+	public function movies()
 	{
 		return $this->belongsTo(Movie::class);
+	}
+
+	public function likes()
+	{
+		return $this->belongsTo(Like::class);
+	}
+
+	public function comments()
+	{
+		return $this->hasMany(Comment::class);
 	}
 }
