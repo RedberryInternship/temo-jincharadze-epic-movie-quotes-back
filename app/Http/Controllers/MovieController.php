@@ -121,8 +121,10 @@ class MovieController extends Controller
 	public function userMovie($id): JsonResponse
 	{
 		$movie = Movie::where('id', $id)->with(['tag', 'quotes' => function ($query) {
-			$query->orderBy('created_at', 'desc')->with(['likes', 'comments']);
-		}])->get();
+			$query->orderBy('created_at', 'desc')->with(['likes', 'comments' => function ($query) {
+				$query->with('user');
+			}]);
+		}])->first();
 
 		return response()->json($movie, 200);
 	}
