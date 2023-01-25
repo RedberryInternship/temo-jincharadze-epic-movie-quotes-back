@@ -30,4 +30,5 @@ Route::prefix('/auth')->middleware(['auth:sanctum'])->group(function () {
 	Route::put('/movie/{id}', [MovieController::class, 'update']);
 	Route::delete('/movie/{id}', [MovieController::class, 'destroy']);
 	Route::post('/quote-upload', [QuoteController::class, 'store']);
+	Route::delete('/quote/{id}', [QuoteController::class, 'destroy']);
 });
