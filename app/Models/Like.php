@@ -11,12 +11,12 @@ class Like extends Model
 
 	protected $fillable = ['user_id', 'quote_id'];
 
-	public function users()
+	public function user()
 	{
 		return $this->belongsTo(User::class);
 	}
 
-	public function quotes()
+	public function quote()
 	{
 		return $this->belongsTo(Quote::class);
 	}
