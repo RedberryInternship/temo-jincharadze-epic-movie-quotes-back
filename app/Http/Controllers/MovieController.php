@@ -110,7 +110,7 @@ class MovieController extends Controller
 		return response()->json('successfully deleted', 200);
 	}
 
-	public function userMovies(): JsonResponse
+	public function index(): JsonResponse
 	{
 		app()->setLocale(request('locale'));
 		$user = auth()->user();
@@ -118,7 +118,7 @@ class MovieController extends Controller
 		return response()->json($movie, 200);
 	}
 
-	public function userMovie($id): JsonResponse
+	public function get($id): JsonResponse
 	{
 		$movie = Movie::where('id', $id)->with(['tag', 'quotes' => function ($query) {
 			$query->orderBy('created_at', 'desc')->with(['likes' => function ($query) {

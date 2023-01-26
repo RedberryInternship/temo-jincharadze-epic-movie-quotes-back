@@ -46,7 +46,7 @@ class QuoteController extends Controller
 		return response()->json('successfully deleted', 200);
 	}
 
-	public function getQuote(): JsonResponse
+	public function get(): JsonResponse
 	{
 		$quote = Quote::where('id', request('id'))->first();
 		return response()->json($quote, 200);

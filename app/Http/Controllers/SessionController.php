@@ -68,6 +68,13 @@ class SessionController extends Controller
 		return response()->json(['message' => 'Invalid Credentials'], 401);
 	}
 
+	public function logout(): JsonResponse
+	{
+		auth()->logout();
+
+		return response()->json('Logged out');
+	}
+
 	public function register(RegisterUserRequest $request): JsonResponse
 	{
 		app()->setLocale($request->lang);
