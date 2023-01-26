@@ -27,7 +27,7 @@ class Quote extends Model
 
 	public function likes()
 	{
-		return $this->belongsTo(Like::class);
+		return $this->hasMany(Like::class);
 	}
 
 	public function comments()

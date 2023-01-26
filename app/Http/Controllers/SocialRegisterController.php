@@ -54,7 +54,7 @@ class SocialRegisterController extends Controller
 
 		if ($checkIfExists)
 		{
-			Auth::loginUsingId($checkIfExists->id, true);
+			Auth::loginUsingId($checkIfExists->id, false);
 			request()->session()->regenerate();
 			return response()->json($checkIfExists, 200);
 		}
@@ -72,7 +72,7 @@ class SocialRegisterController extends Controller
 			'primary'           => true,
 		]);
 
-		Auth::loginUsingId($newAccount->id, true);
+		Auth::loginUsingId($newAccount->id, false);
 		request()->session()->regenerate();
 		return response()->json([$newAccount, $newEmail], 201);
 	}
