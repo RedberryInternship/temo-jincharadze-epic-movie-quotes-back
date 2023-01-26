@@ -71,7 +71,8 @@ class SessionController extends Controller
 	public function logout(): JsonResponse
 	{
 		auth()->logout();
-
+		request()->session()->invalidate();
+		request()->session()->regenerateToken();
 		return response()->json('Logged out');
 	}
 
