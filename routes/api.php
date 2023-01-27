@@ -20,7 +20,6 @@ Route::prefix('/')->group(function () {
 	Route::post('update-password', [PasswordController::class, 'update'])->name('update.password');
 	Route::get('google-register/{locale}/{type}', [SocialRegisterController::class, 'redirectToProvider'])->name('google.register');
 	Route::get('auth/google/{locale}/{type}/callback', [SocialRegisterController::class, 'handleCallBack'])->name('google.register.callback');
-	Route::post('logout-user', [SessionController::class, 'logout']);
 });
 
 //Auth routes
@@ -38,4 +37,5 @@ Route::prefix('/auth')->middleware(['auth:sanctum'])->group(function () {
 	Route::put('/quote/{id}', [QuoteController::class, 'update']);
 	Route::post('/quote-like', [LikeController::class, 'store']);
 	Route::post('/comment-upload', [CommentController::class, 'store']);
+	Route::post('logout-user', [SessionController::class, 'logout']);
 });
