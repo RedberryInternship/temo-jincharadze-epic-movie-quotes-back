@@ -60,7 +60,7 @@ class SocialRegisterController extends Controller
 		}
 
 		$newAccount = User::create([
-			'name'      => $user->name,
+			'name'      => ucwords($user->name),
 			'google_id' => $user->id,
 			'image'     => $user->avatar,
 		]);
