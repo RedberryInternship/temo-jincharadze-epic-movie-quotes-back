@@ -8,13 +8,14 @@ use App\Mail\VerificationMail;
 use App\Models\Email;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 
 class SessionController extends Controller
 {
-	public function login(AuthRequest $request)
+	public function login(AuthRequest $request): JsonResponse
 	{
 		$login = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
 		$remember = request()->has('remember') ? true : false;
@@ -28,13 +29,13 @@ class SessionController extends Controller
 			{
 				if (!$email->email_verified_at)
 				{
-					return response(['message' => 'Your email is not verified.'], 422);
+					return response()->json(['message' => 'Your email is not verified.'], 422);
 				}
 				$user = $email->user;
 			}
 			else
 			{
-				return response(['message' => 'Email not found!'], 400);
+				return response()->json(['message' => 'Email not found!'], 400);
 			}
 		}
 
@@ -44,7 +45,7 @@ class SessionController extends Controller
 
 			if (!$user)
 			{
-				return response(['message' => 'Username not found!'], 400);
+				return response()->json(['message' => 'Username not found!'], 400);
 			}
 
 			if ($user)
@@ -52,7 +53,7 @@ class SessionController extends Controller
 				$checkEmail = $user->email->where('email_verified_at', '!=', 'null')->first();
 				if (!$checkEmail->email_verified_at)
 				{
-					return response(['message' => 'Your account email is not verified'], 422);
+					return response()->json(['message' => 'Your account email is not verified'], 422);
 				}
 			}
 		}
@@ -61,20 +62,27 @@ class SessionController extends Controller
 		{
 			auth()->loginUsingId($user->id, $remember);
 			request()->session()->regenerate();
-			return response(['user' => auth()->user()], 200);
+			return response()->json(['user' => auth()->user()], 200);
 		}
 
-		return response(['message' => 'Invalid Credentials'], 401);
+		return response()->json(['message' => 'Invalid Credentials'], 401);
 	}
 
-	public function register(RegisterUserRequest $request)
+	public function logout(): JsonResponse
+	{
+		request()->session()->invalidate();
+		request()->session()->regenerateToken();
+		return response()->json('Logged out');
+	}
+
+	public function register(RegisterUserRequest $request): JsonResponse
 	{
 		app()->setLocale($request->lang);
 		$formFields = $request->validated();
 
 		if (!$formFields)
 		{
-			return response('', 422);
+			return response()->json('', 422);
 		}
 
 		$userData = $request->except(['email']);
@@ -87,6 +95,7 @@ class SessionController extends Controller
 			$userEmail = Email::create([
 				'user_id' => $user->id,
 				'email'   => $email,
+				'primary' => true,
 			]);
 		}
 
@@ -106,10 +115,10 @@ class SessionController extends Controller
 
 		Mail::to($email)->send(new VerificationMail(['url'=> $frontUrl, 'user' => $user->name]));
 
-		return response($response, 201);
+		return response()->json($response, 201);
 	}
 
-	public function verify(Request $request)
+	public function verify(Request $request): JsonResponse
 	{
 		$email = Email::where('id', $request->email)->first();
 
@@ -117,15 +126,15 @@ class SessionController extends Controller
 		{
 			if ($email->email_verified_at)
 			{
-				return response('Email is already verified');
+				return response()->json('Email is already verified');
 			}
 			$email->email_verified_at = Carbon::now();
 			$email->save();
-			return response('Verified', 200);
+			return response()->json('Verified', 200);
 		}
 		else
 		{
-			return response('Route expired', 403);
+			return response()->json('Route expired', 403);
 		}
 	}
 }
