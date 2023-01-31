@@ -20,6 +20,43 @@ class Quote extends Model
 		'image',
 	];
 
+	public function scopeFilter($query, array $filters)
+	{
+		if ($filters['search'] ?? false)
+		{
+			if (app()->getLocale() === 'en')
+			{
+				if (str_starts_with($filters['search'], '@'))
+				{
+					$movieName = substr($filters['search'], 1);
+					$query->whereHas('movie', function ($q) use ($movieName) {
+						$q->where('name->en', 'like', '%' . (ucwords($movieName)) . '%');
+					});
+				}
+				if (str_starts_with($filters['search'], '#'))
+				{
+					$movieName = substr($filters['search'], 1);
+					$query->where('text-en', 'like', '%' . (ucwords($filters['search']) . '%'));
+				}
+			}
+			if (app()->getLocale() === 'ka')
+			{
+				if (str_starts_with($filters['search'], '@'))
+				{
+					$movieName = substr($filters['search'], 1);
+					$query->whereHas('movie', function ($q) use ($movieName) {
+						$q->where('name->ka', 'like', '%' . (ucwords($movieName)) . '%');
+					});
+				}
+				if (str_starts_with($filters['search'], '#'))
+				{
+					$movieName = substr($filters['search'], 1);
+					$query->where('text-ka', 'like', '%' . (ucwords($filters['search']) . '%'));
+				}
+			}
+		}
+	}
+
 	public function movie()
 	{
 		return $this->belongsTo(Movie::class);
