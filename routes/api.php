@@ -3,6 +3,7 @@
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\NewsFeedController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\SessionController;
@@ -37,5 +38,6 @@ Route::prefix('/auth')->middleware(['auth:sanctum'])->group(function () {
 	Route::put('/quote/{id}', [QuoteController::class, 'update']);
 	Route::post('/quote-like', [LikeController::class, 'store']);
 	Route::post('/comment-upload', [CommentController::class, 'store']);
-	Route::post('logout-user', [SessionController::class, 'logout']);
+	Route::post('/logout-user', [SessionController::class, 'logout']);
+	Route::get('/news-feed', [NewsFeedController::class, 'index']);
 });

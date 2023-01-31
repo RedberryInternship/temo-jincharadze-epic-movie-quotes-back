@@ -20,7 +20,7 @@ class Quote extends Model
 		'image',
 	];
 
-	public function movies()
+	public function movie()
 	{
 		return $this->belongsTo(Movie::class);
 	}
