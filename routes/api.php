@@ -40,4 +40,6 @@ Route::prefix('/auth')->middleware(['auth:sanctum'])->group(function () {
 	Route::post('/comment-upload', [CommentController::class, 'store']);
 	Route::post('/logout-user', [SessionController::class, 'logout']);
 	Route::get('/news-feed', [NewsFeedController::class, 'index']);
+	Route::get('/auth-movies', [NewsFeedController::class, 'movies']);
+	Route::post('/new-quote', [NewsFeedController::class, 'store']);
 });
