@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Like\LikeRequest;
 use App\Models\Like;
+use App\Models\Movie;
+use App\Models\Notification;
 use Illuminate\Http\JsonResponse;
+use App\Http\Requests\Like\LikeRequest;
 
 class LikeController extends Controller
 {
@@ -17,6 +19,7 @@ class LikeController extends Controller
 		if ($checkIsLiked)
 		{
 			$checkIsLiked->delete();
+
 			return response()->json('unliked', 200);
 		}
 
@@ -24,6 +27,18 @@ class LikeController extends Controller
 			'user_id'  => $validated['user_id'],
 			'quote_id' => $validated['quote_id'],
 		]);
+
+		$movie = Movie::where('id', request('movie_id'))->first();
+
+		if ($movie->user_id !== auth()->user()->id)
+		{
+			Notification::create([
+				'user_id'     => $movie->user_id,
+				'quote_id'    => $validated['quote_id'],
+				'has_new'     => 1,
+				'sender_id'   => $validated['user_id'],
+			]);
+		}
 
 		return response()->json('liked', 201);
 	}
