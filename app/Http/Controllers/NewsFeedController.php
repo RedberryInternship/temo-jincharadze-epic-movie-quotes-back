@@ -13,11 +13,7 @@ class NewsFeedController extends Controller
 	{
 		app()->setLocale(request('locale'));
 
-		$quotes = Quote::with(['movie' => function ($query) {
-			$query->with('user');
-		}, 'comments' => function ($query) {
-			$query->with('user');
-		}, 'likes'])->filter(request(['search']))->orderBy('created_at', 'desc')->paginate(3);
+		$quotes = Quote::with(['movie', 'movie.user', 'comments', 'comments.user', 'likes'])->filter(request(['search']))->orderBy('created_at', 'desc')->paginate(3);
 
 		return response()->json($quotes, 200);
 	}
