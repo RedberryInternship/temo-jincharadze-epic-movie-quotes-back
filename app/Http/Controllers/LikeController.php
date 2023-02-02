@@ -35,7 +35,7 @@ class LikeController extends Controller
 			Notification::create([
 				'user_id'     => $movie->user_id,
 				'quote_id'    => $validated['quote_id'],
-				'has_new'     => 1,
+				'has_new'     => true,
 				'sender_id'   => $validated['user_id'],
 			]);
 		}
