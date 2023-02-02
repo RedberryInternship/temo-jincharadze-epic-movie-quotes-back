@@ -13,7 +13,7 @@ return new class extends Migration {
 			$table->foreignId('quote_id')->references('id')->on('quotes')->constrained()->cascadeOnDelete();
 			$table->boolean('has_new')->default(false);
 			$table->boolean('has_comment')->default(false);
-			$table->bigInteger('sender_id');
+			$table->foreignId('sender_id')->references('id')->on('users')->constrained()->cascadeOnDelete();
 			$table->timestamps();
 		});
 	}
