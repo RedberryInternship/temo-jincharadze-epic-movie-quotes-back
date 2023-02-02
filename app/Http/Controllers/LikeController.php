@@ -7,6 +7,7 @@ use App\Models\Movie;
 use App\Models\Notification;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\Like\LikeRequest;
+use App\Events\NotificationStatusUpdated;
 
 class LikeController extends Controller
 {
@@ -38,6 +39,8 @@ class LikeController extends Controller
 				'has_new'     => true,
 				'sender_id'   => $validated['user_id'],
 			]);
+
+			NotificationStatusUpdated::dispatch(['user_id' => $movie->user_id]);
 		}
 
 		return response()->json('liked', 201);

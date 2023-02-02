@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Comment\CommentStoreRequest;
-use App\Models\Comment;
 use App\Models\Movie;
+use App\Models\Comment;
 use App\Models\Notification;
 use Illuminate\Http\JsonResponse;
+use App\Events\NotificationStatusUpdated;
+use App\Http\Requests\Comment\CommentStoreRequest;
 
 class CommentController extends Controller
 {
@@ -36,6 +37,8 @@ class CommentController extends Controller
 				'has_comment' => true,
 				'sender_id'   => $validated['user_id'],
 			]);
+
+			NotificationStatusUpdated::dispatch(['user_id' => $movie->user_id]);
 		}
 
 		return response()->json($comment, 201);

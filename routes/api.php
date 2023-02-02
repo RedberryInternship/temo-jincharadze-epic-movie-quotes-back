@@ -12,6 +12,16 @@ use App\Http\Controllers\SocialRegisterController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+class Notification
+{
+	public $id;
+
+	public function __construct($id)
+	{
+		$this->id = $id;
+	}
+}
+
 //Public routes
 Route::prefix('/')->group(function () {
 	Route::post('login', [SessionController::class, 'login']);
