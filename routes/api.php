@@ -6,6 +6,7 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\NewsFeedController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SocialRegisterController;
@@ -55,4 +56,6 @@ Route::prefix('/auth')->middleware(['auth:sanctum'])->group(function () {
 	Route::post('/new-quote', [NewsFeedController::class, 'store']);
 	Route::get('/user-notifications', [NotificationController::class, 'index']);
 	Route::put('/read-notification', [NotificationController::class, 'read']);
+	Route::get('/check-username', [ProfileController::class, 'checkUser']);
+	Route::put('/update-profile', [ProfileController::class, 'update']);
 });

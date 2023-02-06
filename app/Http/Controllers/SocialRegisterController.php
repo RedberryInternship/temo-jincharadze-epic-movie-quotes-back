@@ -9,6 +9,7 @@ use Illuminate\Database\Query\Expression;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
 
 class SocialRegisterController extends Controller
 {
@@ -46,6 +47,8 @@ class SocialRegisterController extends Controller
 
 		$checkIfExists = User::where('google_id', $user->id)->first();
 		$checkEmail = Email::where('email', $user->email)->first();
+		$lowerCaseName = Str::lower($user->name);
+		$userName = str_replace(' ', '', $lowerCaseName);
 
 		if ($checkEmail && $checkEmail->user->password !== null)
 		{
@@ -60,7 +63,7 @@ class SocialRegisterController extends Controller
 		}
 
 		$newAccount = User::create([
-			'name'      => ucwords($user->name),
+			'name'      => $userName,
 			'google_id' => $user->id,
 			'image'     => $user->avatar,
 		]);
