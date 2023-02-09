@@ -33,6 +33,7 @@ Route::prefix('/')->group(function () {
 	Route::post('update-password', [PasswordController::class, 'update'])->name('update.password');
 	Route::get('google-register/{locale}/{type}', [SocialRegisterController::class, 'redirectToProvider'])->name('google.register');
 	Route::get('auth/google/{locale}/{type}/callback', [SocialRegisterController::class, 'handleCallBack'])->name('google.register.callback');
+	Route::get('verify-email', [ProfileController::class, 'verifyEmail'])->name('verify.email');
 });
 
 //Auth routes
@@ -57,5 +58,11 @@ Route::prefix('/auth')->middleware(['auth:sanctum'])->group(function () {
 	Route::get('/user-notifications', [NotificationController::class, 'index']);
 	Route::put('/read-notification', [NotificationController::class, 'read']);
 	Route::get('/check-username', [ProfileController::class, 'checkUser']);
+	Route::get('/check-email', [ProfileController::class, 'checkEmail']);
 	Route::put('/update-profile', [ProfileController::class, 'update']);
+	Route::post('/add-email', [ProfileController::class, 'store']);
+	Route::delete('/delete-email', [ProfileController::class, 'delete']);
+	Route::put('/change-primary-email', [ProfileController::class, 'updatePrimary']);
+	Route::put('/update-username', [ProfileController::class, 'updateName']);
+	Route::post('/change-password', [ProfileController::class, 'updatePassword']);
 });
