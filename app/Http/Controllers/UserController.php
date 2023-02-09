@@ -9,8 +9,8 @@ class UserController extends Controller
 {
 	public function me(): JsonResponse
 	{
-		$user = User::where('id', auth()->user()->id)->select(['id', 'name', 'image'])->with(['emails' => function ($query) {
-			$query->select('email', 'primary', 'id', 'user_id');
+		$user = User::where('id', auth()->user()->id)->select(['id', 'name', 'image', 'google_id'])->with(['emails' => function ($query) {
+			$query->select('email', 'primary', 'id', 'user_id', 'email_verified_at');
 		}])->first();
 
 		return response()->json(['user' => $user], 200);
