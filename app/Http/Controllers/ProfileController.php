@@ -79,6 +79,7 @@ class ProfileController extends Controller
 
 	public function store(CheckEmailRequest $request): JsonResponse
 	{
+		app()->setLocale(request('locale'));
 		$validated = $request->validated();
 
 		if (!$validated)
