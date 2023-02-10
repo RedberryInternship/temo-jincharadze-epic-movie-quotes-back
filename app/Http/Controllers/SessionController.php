@@ -50,7 +50,7 @@ class SessionController extends Controller
 
 			if ($user)
 			{
-				$checkEmail = $user->email->where('email_verified_at', '!=', 'null')->first();
+				$checkEmail = $user->emails->where('email_verified_at', '!=', 'null')->first();
 				if (!$checkEmail->email_verified_at)
 				{
 					return response()->json(['message' => 'Your account email is not verified'], 422);
