@@ -35,6 +35,5 @@ jobs:
             git pull
             npm ci
             composer install
-            pm2 restart epic-movies-back
           EOF
 \
