@@ -7,20 +7,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: copy env file
-        run: cp .env.example .env
-      - name: install npm dependencies
-        run: npm ci
-      - name: install composer dependencies
-        run: composer install
-      - name: run php artisan optimize
-        run: php artisan optimize
-      - name: run php artisan migrate
-        run: php artisan migrate
       - name: Set ssh key
         run: |
           mkdir -p ~/.ssh
@@ -35,5 +21,7 @@ jobs:
             git pull
             npm ci
             composer install
+            php artisan migrate
+            php artisan optimize:clear
+            php artisan optimize
           EOF
-\
