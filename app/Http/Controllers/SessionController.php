@@ -90,6 +90,11 @@ class SessionController extends Controller
 		$email = $request->email;
 
 		$user = User::create($userData);
+
+		$user->update([
+			'image' => asset('assets/images/default.png'),
+		]);
+
 		if ($user)
 		{
 			$userEmail = Email::create([
