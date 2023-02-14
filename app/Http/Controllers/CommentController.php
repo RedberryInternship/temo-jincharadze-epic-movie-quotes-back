@@ -28,7 +28,7 @@ class CommentController extends Controller
 
 		$movie = Movie::where('id', request('movie_id'))->first();
 
-		if ($movie->user_id !== auth()->user()->id)
+		if ($movie && $movie->user_id !== auth()->user()->id)
 		{
 			Notification::create([
 				'user_id'     => $movie->user_id,
