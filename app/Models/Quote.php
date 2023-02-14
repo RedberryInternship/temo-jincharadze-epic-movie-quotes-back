@@ -24,35 +24,20 @@ class Quote extends Model
 	{
 		if ($filters['search'] ?? false)
 		{
-			if (app()->getLocale() === 'en')
+			if (str_starts_with($filters['search'], '@'))
 			{
-				if (str_starts_with($filters['search'], '@'))
-				{
-					$movieName = substr($filters['search'], 1);
-					$query->whereHas('movie', function ($q) use ($movieName) {
-						$q->where('name->en', 'like', '%' . (ucwords($movieName)) . '%');
-					});
-				}
-				if (str_starts_with($filters['search'], '#'))
-				{
-					$movieName = substr($filters['search'], 1);
-					$query->where('text-en', 'like', '%' . (ucwords($filters['search']) . '%'));
-				}
+				$movieName = substr($filters['search'], 1);
+				$query->whereHas('movie', function ($q) use ($movieName) {
+					$q->where('name->en', 'like', '%' . (ucwords($movieName)) . '%')
+						->orWhere('name->ka', 'like', '%' . ($movieName) . '%');
+				});
 			}
-			if (app()->getLocale() === 'ka')
+
+			if (str_starts_with($filters['search'], '#'))
 			{
-				if (str_starts_with($filters['search'], '@'))
-				{
-					$movieName = substr($filters['search'], 1);
-					$query->whereHas('movie', function ($q) use ($movieName) {
-						$q->where('name->ka', 'like', '%' . (ucwords($movieName)) . '%');
-					});
-				}
-				if (str_starts_with($filters['search'], '#'))
-				{
-					$movieName = substr($filters['search'], 1);
-					$query->where('text-ka', 'like', '%' . (ucwords($filters['search']) . '%'));
-				}
+				$quoteName = substr($filters['search'], 1);
+				$query->where('text->en', 'like', '%' . (ucwords($quoteName)) . '%')
+					->orWhere('text->ka', 'like', '%' . ($quoteName) . '%');
 			}
 		}
 	}
