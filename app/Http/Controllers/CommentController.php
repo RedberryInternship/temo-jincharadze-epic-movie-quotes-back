@@ -15,11 +15,6 @@ class CommentController extends Controller
 	{
 		$validated = $request->validated();
 
-		if (!$validated)
-		{
-			return response()->json('', 422);
-		}
-
 		$comment = Comment::create([
 			'user_id'  => $validated['user_id'],
 			'quote_id' => $validated['quote_id'],
