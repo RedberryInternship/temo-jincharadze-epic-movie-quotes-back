@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Tag;
+use Database\Factories\TagFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
 
 		foreach ($tags as $tag)
 		{
-			Tag::create(['name' =>  $tag]);
+			TagFactory::factory()->create(['name' =>  $tag]);
 		}
 	}
 }

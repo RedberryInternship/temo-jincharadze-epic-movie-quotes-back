@@ -90,7 +90,7 @@ class MovieController extends Controller
 
 		if ($movie)
 		{
-			MovieTag::where('movie_id', $id)->delete();
+			$movie->tag()->detach();
 			$tags = json_decode($validated['tags']);
 			foreach ($tags as $tag)
 			{
