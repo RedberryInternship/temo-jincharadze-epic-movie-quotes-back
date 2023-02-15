@@ -23,7 +23,7 @@ class PasswordController extends Controller
 
 		if ($checkUser->google_id !== null)
 		{
-			return response()->json('Cannot reset password on google email', 422);
+			return response()->json(['message' => 'Cannot reset password on google email'], 422);
 		}
 
 		if (!$check)
