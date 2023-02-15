@@ -26,11 +26,6 @@ class PasswordController extends Controller
 			return response()->json(['message' => 'Cannot reset password on google email'], 422);
 		}
 
-		if (!$check)
-		{
-			return response('', 422);
-		}
-
 		$email = Email::where('email', $request->email)->first();
 
 		if (!$email->email_verified_at)
