@@ -18,7 +18,7 @@ class MovieStoreRequest extends FormRequest
 			'descriptionKa' => ['required', 'regex:/^[ა-ჰ0-9",.?!() ]*$/'],
 			'budget'        => ['required'],
 			'year'          => ['required'],
-			'image'         => ['required'],
+			'image'         => ['required', 'max:10240'],
 			'tags'          => ['required'],
 		];
 	}
