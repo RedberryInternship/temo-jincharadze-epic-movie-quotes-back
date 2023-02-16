@@ -15,11 +15,15 @@ class PasswordController extends Controller
 	public function send(EmailRequest $request)
 	{
 		app()->setLocale($request->lang);
+
 		$check = $request->validated();
 
-		if (!$check)
+		$checkEmail = Email::where('email', $check['email'])->first();
+		$checkUser = User::where('id', $checkEmail->user_id)->first();
+
+		if ($checkUser->google_id !== null)
 		{
-			return response('', 422);
+			return response()->json(['message' => 'Cannot reset password on google email'], 422);
 		}
 
 		$email = Email::where('email', $request->email)->first();
