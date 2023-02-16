@@ -10,8 +10,8 @@ class MovieStoreRequest extends FormRequest
 	{
 		return [
 			'user_id'       => ['required'],
-			'nameEn'        => ['required', 'regex:/^[a-zA-Z0-9:- ]*$/'],
-			'nameKa'        => ['required', 'regex:/^[ა-ჰ0-9:- ]*$/'],
+			'nameEn'        => ['required', 'regex:/^[a-zA-Z0-9 ]*$/'],
+			'nameKa'        => ['required', 'regex:/^[ა-ჰ0-9 ]*$/'],
 			'directorEn'    => ['required', 'regex:/^[a-zA-Z ]*$/'],
 			'directorKa'    => ['required', 'regex:/^[ა-ჰ ]*$/'],
 			'descriptionEn' => ['required', 'regex:/^[a-zA-Z0-9",.?!() ]*$/'],
