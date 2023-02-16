@@ -11,7 +11,7 @@ class QuoteUpdateRequest extends FormRequest
 		return [
 			'quoteEn'  => ['required', 'regex:/^[-a-zA-Z0-9:",.?!() ]*$/'],
 			'quoteKa'  => ['required', 'regex:/^[-ა-ჰ0-9:",.?!() ]*$/'],
-			'image'    => ['required'],
+			'image'    => ['required', 'max:10240'],
 		];
 	}
 }
